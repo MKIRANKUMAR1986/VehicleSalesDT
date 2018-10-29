@@ -49,14 +49,17 @@ namespace VehicleSalesDT.Controllers
             _filePath = Path.Combine(Server.MapPath("~/App_Data"), "Dealertrack.csv");
             _sales = _blSale.GetSales(_filePath);
 
-            var temp = _sales
-                        .GroupBy(x => x.Vehicle)
-                        .Select(a => new { Vehicle = a.Key, NumOfTimes = a.Count() })
-                        .OrderByDescending(d => d.NumOfTimes)
-                        .Take(1)
-                        .Select(a => a.Vehicle).ToList();
+            if(_sales != null)
+            {
+                var temp = _sales
+                                .GroupBy(x => x.Vehicle)
+                                .Select(a => new { Vehicle = a.Key, NumOfTimes = a.Count() })
+                                .OrderByDescending(d => d.NumOfTimes)
+                                .Take(1)
+                                .Select(a => a.Vehicle).ToList();
 
-            ViewData["MostOftenVehicle"] = temp.FirstOrDefault();
+                ViewData["MostOftenVehicle"] = temp.FirstOrDefault();
+            }
 
             return View(_sales);
         }
@@ -70,14 +73,17 @@ namespace VehicleSalesDT.Controllers
             _filePath = Path.Combine(Server.MapPath("~/App_Data"), "Dealertrack.csv");
             _sales = _blSale.GetSales(postedFile, _filePath);
 
-            var temp = _sales
-            .GroupBy(x => x.Vehicle)
-            .Select(a => new { Vehicle = a.Key, NumOfTimes = a.Count() })
-            .OrderByDescending(d => d.NumOfTimes)
-            .Take(1)
-            .Select(a => a.Vehicle).ToList();
+            if (_sales != null)
+            {
+                var temp = _sales
+                                .GroupBy(x => x.Vehicle)
+                                .Select(a => new { Vehicle = a.Key, NumOfTimes = a.Count() })
+                                .OrderByDescending(d => d.NumOfTimes)
+                                .Take(1)
+                                .Select(a => a.Vehicle).ToList();
 
-            ViewData["MostOftenVehicle"] = temp.FirstOrDefault();
+                ViewData["MostOftenVehicle"] = temp.FirstOrDefault();
+            }
             return View(_sales);
         }
         //public List<Sale> GetSales1()

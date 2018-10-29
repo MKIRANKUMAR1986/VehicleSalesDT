@@ -427,10 +427,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Sale\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\MonthPrice\" />
-    <Folder Include="Views\Sales\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
