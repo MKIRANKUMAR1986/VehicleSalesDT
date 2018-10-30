@@ -14,25 +14,17 @@ namespace VehicleSalesDT.BusinessLogic
 {
     public class BLMonthPrice : IBLMonthPrice
     {
-        private IBLMonthPrice _BL;
-
         private IBLCommon _common;
 
-        public BLMonthPrice(IBLMonthPrice monthPriceBL)
+        public BLMonthPrice(IBLCommon commonBL)
         {
-            _BL = monthPriceBL;
-        }
-
-        public BLMonthPrice()
-        {
-
+            _common = commonBL;
         }
 
         public IEnumerable<MonthPrice> GetMonthPrice(string filePath)
         {
             try
             {
-                _common = new BLCommon(new DALSale());
                 if (File.Exists(filePath))
                 {
                     return _common.GetParsedSales(filePath)

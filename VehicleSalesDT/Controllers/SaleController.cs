@@ -9,26 +9,24 @@ using Excel = Microsoft.Office.Interop.Excel;
 using Microsoft.VisualBasic.FileIO;
 using VehicleSalesDT.BusinessLogic;
 using VehicleSalesDT.Unity;
+using Unity.Attributes;
+using VehicleSalesDT.BusinessLogic.Shared;
 
 namespace VehicleSalesDT.Controllers
 {
     public class SaleController : Controller
     {
-        string _filePath = "";
-
         IEnumerable<Sale> _sales = null;
 
         IBLSale _blSale = null;
+        IBLCommon _blCommon = null;
 
-        public SaleController(IBLSale saleBL)
+        public SaleController(IBLSale saleBL, IBLCommon blCommon)
         {
             _blSale = saleBL;
+            _blCommon = blCommon;
         }
 
-        public SaleController()
-        {
-            
-        }
         // GET: Sales
         public ActionResult Index()
         {
@@ -44,10 +42,7 @@ namespace VehicleSalesDT.Controllers
             //            Price = 429987
             //        }
             //    };
-            _blSale = new BLSale();
-
-            _filePath = Path.Combine(Server.MapPath("~/App_Data"), "Dealertrack.csv");
-            _sales = _blSale.GetSales(_filePath);
+            _sales = _blSale.GetSales(_blCommon.GetExcelFilePath());
 
             if(_sales != null)
             {
@@ -69,9 +64,7 @@ namespace VehicleSalesDT.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index(HttpPostedFileBase postedFile)
         {
-            _blSale = new BLSale();
-            _filePath = Path.Combine(Server.MapPath("~/App_Data"), "Dealertrack.csv");
-            _sales = _blSale.GetSales(postedFile, _filePath);
+            _sales = _blSale.GetSales(postedFile, _blCommon.GetExcelFilePath());
 
             if (_sales != null)
             {
@@ -83,6 +76,10 @@ namespace VehicleSalesDT.Controllers
                                 .Select(a => a.Vehicle).ToList();
 
                 ViewData["MostOftenVehicle"] = temp.FirstOrDefault();
+            }
+            else
+            {
+                ViewData["Message"] = "There are errors in the CSV file. Please Correct it and Re-Upload";
             }
             return View(_sales);
         }

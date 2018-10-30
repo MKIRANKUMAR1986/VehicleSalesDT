@@ -9,5 +9,6 @@ namespace VehicleSalesDT.BusinessLogic.Shared
     public interface IBLCommon
     {
         IEnumerable<Sale> GetParsedSales(string filePath);
+        string GetExcelFilePath();
     }
 }

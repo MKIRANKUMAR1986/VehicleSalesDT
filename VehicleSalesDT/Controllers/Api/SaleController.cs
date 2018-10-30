@@ -12,34 +12,25 @@ using System.Globalization;
 using VehicleSalesDT.BusinessLogic;
 using Microsoft.Practices.Unity;
 using Unity;
+using System.Web.Configuration;
+using VehicleSalesDT.BusinessLogic.Shared;
 
 namespace VehicleSalesDT.Controllers.Api
 {
     public class SaleController : ApiController
     {
-        string _filePath = "";
-
-        IEnumerable<Sale> _sales = null;
-
         IBLSale _blSale = null;
+        IBLCommon _blCommon = null;
 
-        public SaleController(IBLSale saleBL)
+        public SaleController(IBLSale saleBL, IBLCommon blCommon)
         {
             _blSale = saleBL;
+            _blCommon = blCommon;
         }
 
-        public SaleController()
-        {
-            
-        }
-        // GET: Sale
         public IEnumerable<Sale> GetSales()
-        {
-            _blSale = new BLSale();
-            _filePath = Path.Combine(HttpContext.Current.Server.MapPath("~/App_Data"), "Dealertrack.csv");
-            _sales = _blSale.GetSales(_filePath);
-
-            return _sales;
+        {            
+            return _blSale.GetSales(_blCommon.GetExcelFilePath());
         }
         //[System.Web.Mvc.HttpPost]
         //public IEnumerable<Sale> Sales()

@@ -10,35 +10,25 @@ using Microsoft.VisualBasic.FileIO;
 using System.Web.Http;
 using System.Globalization;
 using VehicleSalesDT.BusinessLogic;
+using System.Web.Configuration;
+using VehicleSalesDT.BusinessLogic.Shared;
 
 namespace VehicleSalesDT.Controllers.Api
 {
     public class MonthPriceController : ApiController
     {
-        string _filePath = "";
-
-        IEnumerable<MonthPrice> _monthPrices = null;
-
         IBLMonthPrice _blMonthPrice = null;
+        IBLCommon _blCommon = null;
 
-        public MonthPriceController(IBLMonthPrice blMonthPrice)
+        public MonthPriceController(IBLMonthPrice blMonthPrice, IBLCommon blCommon)
         {
             _blMonthPrice = blMonthPrice;
+            _blCommon = blCommon;
         }
 
-        public MonthPriceController()
-        {
-            
-        }
-
-        // GET: Sale
         public IEnumerable<MonthPrice> GetMonthPrice()
         {
-            _blMonthPrice = new BLMonthPrice();
-            _filePath = Path.Combine(HttpContext.Current.Server.MapPath("~/App_Data"), "Dealertrack.csv");
-            _monthPrices = _blMonthPrice.GetMonthPrice(_filePath);
-
-            return _monthPrices;
+            return _blMonthPrice.GetMonthPrice(_blCommon.GetExcelFilePath());
         }
     }
 }

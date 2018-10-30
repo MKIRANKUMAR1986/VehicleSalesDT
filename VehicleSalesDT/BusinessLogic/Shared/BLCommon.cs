@@ -5,17 +5,14 @@ using System.Web;
 using VehicleSalesDT.Models;
 using VehicleSalesDT.DAL;
 using Microsoft.VisualBasic.FileIO;
+using System.Web.Configuration;
+using System.IO;
 
 namespace VehicleSalesDT.BusinessLogic.Shared
 {
     public class BLCommon : IBLCommon
     {
         private IDALSale _dalSale;
-
-        public BLCommon()
-        {
-
-        }
 
         public BLCommon(IDALSale dalSale)
         {
@@ -38,18 +35,22 @@ namespace VehicleSalesDT.BusinessLogic.Shared
                 fields = parser.ReadFields();
                 if (SaleId > 1)
                 {
-                    Sale sale = new Sale()
+                    if (ValidateExcelFile(fields))
                     {
-                        SaleId = SaleId,
-                        DealerNumber = Convert.ToInt32(fields[0]),
-                        CustomerName = fields[1],
-                        DealershipName = fields[2],
-                        Vehicle = fields[3],
-                        Price = Convert.ToDecimal(fields[4]),
-                        SaleDate = Convert.ToDateTime(fields[5])
-                    };
-                    _Sales.Add(sale);
-                    SaleId++;
+                        Sale sale = new Sale()
+                        {
+                            SaleId = SaleId,
+                            DealerNumber = Convert.ToInt32(fields[0]),
+                            CustomerName = fields[1],
+                            DealershipName = fields[2],
+                            Vehicle = fields[3],
+                            Price = Convert.ToDecimal(fields[4]),
+                            SaleDate = Convert.ToDateTime(fields[5])
+                        };
+                        _Sales.Add(sale);
+                        SaleId++;
+                    }
+                    else { return null; }
                 }
                 else
                 {
@@ -59,6 +60,41 @@ namespace VehicleSalesDT.BusinessLogic.Shared
 
             parser.Close();
             return _Sales;
+        }
+
+        public string GetExcelFilePath()
+        {
+            if (WebConfigurationManager.AppSettings[Constants.EXCEL_FILE_FOLDER_NAME] != null && WebConfigurationManager.AppSettings[Constants.EXCEL_FILE_NAME] != null)
+                return Path.Combine(HttpContext.Current.Server.MapPath(WebConfigurationManager.AppSettings[Constants.EXCEL_FILE_FOLDER_NAME].Trim().ToString()), WebConfigurationManager.AppSettings[Constants.EXCEL_FILE_NAME].Trim().ToString());
+            else
+                return Path.Combine(HttpContext.Current.Server.MapPath(Constants.EXCEL_FILE_FOLDER_NAME), Constants.EXCEL_FILE_NAME); ;
+        }
+
+        private bool ValidateExcelFile(string[] fields)
+        {
+            int num;
+            decimal dec;
+            DateTime temp;
+
+            foreach (var field in fields)
+            {
+                if (field == null)
+                    return false;
+            }
+
+            if (!int.TryParse(fields[0].ToString(), out num))
+            {
+                return false;
+            }
+            else if(!decimal.TryParse(fields[0].ToString(), out dec))
+            {
+                return false;
+            }
+            else if (!DateTime.TryParse(fields[5].ToString(), out temp))
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

@@ -16,29 +16,20 @@ namespace VehicleSalesDT.BusinessLogic
 {
     public class BLSale : IBLSale
     {
-        private IBLSale _BL;
-
         private IBLCommon _common;
 
-        public BLSale(IBLSale saleBL)
+        public BLSale(IBLCommon commonBL)
         {
-            _BL = saleBL;
-        }
-
-        public BLSale()
-        {
-            
+            _common = commonBL;
         }
 
         public IEnumerable<Sale> GetSales(string filePath)
         {
             try
             {
-                _common = UnityConfig.Retrieve<BLCommon>();
-
                 if (File.Exists(filePath))
                 {
-                    return _common.GetParsedSales(filePath);
+                     return _common.GetParsedSales(filePath); 
                 }
                 return null;
             }
@@ -52,7 +43,6 @@ namespace VehicleSalesDT.BusinessLogic
         {
             try
             {
-                _common = UnityConfig.Retrieve<BLCommon>();
                 if (postedFile != null)
                 {
                     postedFile.SaveAs(filePath);
@@ -61,10 +51,10 @@ namespace VehicleSalesDT.BusinessLogic
                 }
                 return null;
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 return null;
             }
-            
         }
     }
 }
