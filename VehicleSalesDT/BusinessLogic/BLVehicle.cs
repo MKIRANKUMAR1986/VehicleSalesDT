@@ -20,13 +20,13 @@ namespace VehicleSalesDT.BusinessLogic
         {
             try
             {
-                if (File.Exists(filePath))
+                if (_common.CheckIfFileExists(filePath))
                 {
                     return _common.GetParsedSales(filePath)
                         .GroupBy(x => x.Vehicle)
                         .Select(a => new Vehicle { VehicleName = a.Key })
                         .OrderBy(c => c.VehicleName).ToList();
-                }
+                }                
                 return null;
             }
             catch (Exception ex)

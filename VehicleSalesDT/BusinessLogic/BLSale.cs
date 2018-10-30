@@ -27,7 +27,7 @@ namespace VehicleSalesDT.BusinessLogic
         {
             try
             {
-                if (File.Exists(filePath))
+                if (_common.CheckIfFileExists(filePath))
                 {
                      return _common.GetParsedSales(filePath); 
                 }

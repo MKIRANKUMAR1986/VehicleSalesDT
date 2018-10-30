@@ -21,7 +21,7 @@ namespace VehicleSalesDT.Controllers.Api
             _blCommon = blCommon;
         }
 
-        public IEnumerable<MonthSale> GetMonthPrice()
+        public IEnumerable<MonthSale> GetMonthSale()
         {
             return _blMonthSale.GetMonthSale(_blCommon.GetExcelFilePath());
         }

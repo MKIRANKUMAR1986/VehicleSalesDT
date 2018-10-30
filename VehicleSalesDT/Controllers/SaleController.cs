@@ -30,30 +30,18 @@ namespace VehicleSalesDT.Controllers
         // GET: Sales
         public ActionResult Index()
         {
-            //var sales = new List<Sale>
-            //    {
-            //        new Sale {
-            //            SaleId = 1,
-            //            SaleDate = Convert.ToDateTime("6/19/2018"),
-            //            DealerNumber = 5469,
-            //            CustomerName = "Milli Fulton",
-            //            DealershipName = "Sun of Saskatoon",
-            //            Vehicle = "2017 Ferrari 488 Spider",
-            //            Price = 429987
-            //        }
-            //    };
             _sales = _blSale.GetSales(_blCommon.GetExcelFilePath());
 
-            if(_sales != null)
+            if(_sales != null && _sales.Count() > 0)
             {
-                var temp = _sales
+                ViewData["MostOftenVehicle"] = _sales
                                 .GroupBy(x => x.Vehicle)
                                 .Select(a => new { Vehicle = a.Key, NumOfTimes = a.Count() })
                                 .OrderByDescending(d => d.NumOfTimes)
                                 .Take(1)
-                                .Select(a => a.Vehicle).ToList();
-
-                ViewData["MostOftenVehicle"] = temp.FirstOrDefault();
+                                .Select(a => a.Vehicle)
+                                .ToList()
+                                .FirstOrDefault();
             }
 
             return View(_sales);
@@ -68,21 +56,29 @@ namespace VehicleSalesDT.Controllers
 
             if (_sales != null)
             {
-                var temp = _sales
-                                .GroupBy(x => x.Vehicle)
-                                .Select(a => new { Vehicle = a.Key, NumOfTimes = a.Count() })
-                                .OrderByDescending(d => d.NumOfTimes)
-                                .Take(1)
-                                .Select(a => a.Vehicle).ToList();
-
-                ViewData["MostOftenVehicle"] = temp.FirstOrDefault();
+                if (_sales.Count() > 0)
+                {
+                    ViewData["MostOftenVehicle"] = _sales
+                                    .GroupBy(x => x.Vehicle)
+                                    .Select(a => new { Vehicle = a.Key, NumOfTimes = a.Count() })
+                                    .OrderByDescending(d => d.NumOfTimes)
+                                    .Take(1)
+                                    .Select(a => a.Vehicle)
+                                    .ToList()
+                                    .FirstOrDefault();
+                }
+                else
+                {
+                    ViewData["Message"] = "There are no records in the CSV file. Please upload a file with Vehicle Sales.";
+                }
             }
             else
             {
-                ViewData["Message"] = "There are errors in the CSV file. Please Correct it and Re-Upload";
+                ViewData["Message"] = "There are errors in the CSV file. Please Correct it and Re-Upload.";
             }
             return View(_sales);
         }
+
         //public List<Sale> GetSales1()
         //{
         //    String[] csv = System.IO.File.ReadAllLines(Path.Combine(Server.MapPath("~/App_Data"), "Dealertrack-CSV-Example.csv"));

@@ -32,6 +32,7 @@ namespace VehicleSalesDT.Controllers.Api
         {            
             return _blSale.GetSales(_blCommon.GetExcelFilePath());
         }
+
         //[System.Web.Mvc.HttpPost]
         //public IEnumerable<Sale> Sales()
         //{

@@ -13,47 +13,62 @@
 }
 <h2></h2>
 <div class="container">
-    @using (@Html.BeginForm("Index", "Sale", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-        <div>
-            <label>Choose file (csv): </label>
-            <div class="tt-container">
-                <input id="postedFile" name="postedFile" type="file" required onchange="return fileValidation()"/>
+    <div class="row my-2">
+        <div class="col-md-2 py-1">
+            <div class="card">
+                <div class="card-body">
+                    @using (@Html.BeginForm("Index", "Sale", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div>
+                            
+                            <div>
+                                <label>Choose file (csv): </label>
+                                <input id="postedFile" name="postedFile" type="file" required onchange="return fileValidation()" />
+                            </div>
+                        </div>
+                        <div>
+                            <h4></h4>
+                        </div>
+                        @Html.AntiForgeryToken()
+                        <div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>                        
+                    }                    
+                </div>
             </div>
         </div>
-        <div>
-            <h4></h4>
-        </div>
-        <div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-        @Html.AntiForgeryToken()
-        {
-            if (@ViewData["MostOftenVehicle"] != null)
-            {
-                if (@ViewData["MostOftenVehicle"].ToString() != "")
-                {
-                    <div class="col-sm-offset-2  col-sm-10 p-3 mb-2 bg-info text-white">
-                        <h2>Most Often Sold Vehicle:  @ViewData["MostOftenVehicle"]</h2>
-                    </div>
-                }
-                else
-                {
-                    <div class="col-sm-offset-2  col-sm-10">
-                        <h2></h2>
-                    </div>
-                }
-            }
-            else
-            {
-                <div class="col-sm-offset-2  col-sm-10">
-                    <h2></h2>
+        <div class="col-md-10 py-1">
+            <div class="card">
+                <div class="card-body">
+                    @if (@ViewData["MostOftenVehicle"] != null)
+                    {
+                        if (@ViewData["MostOftenVehicle"].ToString() != "")
+                        {
+                            <div class="col-sm-offset-2  col-sm-10 p-3 mb-2 bg-info text-white">
+                                <h4>Most Often Sold Vehicle:  @ViewData["MostOftenVehicle"]</h4>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-sm-offset-2  col-sm-10">
+                                <h2></h2>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-sm-offset-2  col-sm-10">
+                            <h2></h2>
+                        </div>
+                    }                   
                 </div>
-            }
-        }
-    }
+            </div>
+        </div>
+    </div>
 </div>
-   
+   <div>
+    <h4></h4>
+</div>
     <div class="container">
         <table id="sales" class="table table-bordered table-hover">
             <thead>
@@ -323,10 +338,10 @@
                             datasets: [
                                 {
                                     label: 'Monthly Sales',
-                                    backgroundColor: colors[3],
+                                    backgroundColor: colors[2],
                                     borderColor: colors[0],
                                     borderWidth: 4,
-                                    pointBackgroundColor: colors[0],
+                                    pointBackgroundColor: colors[5],
                                     hoverBackgroundColor: 'rgba(200, 200, 200, 1)',
                                     hoverBorderColor: 'rgba(200, 200, 200, 1)',
                                     data: Sale

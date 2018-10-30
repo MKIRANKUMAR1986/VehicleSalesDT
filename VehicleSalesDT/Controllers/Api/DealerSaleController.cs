@@ -15,9 +15,9 @@ namespace VehicleSalesDT.Controllers.Api
         IBLDealerSale _blDealerSale = null;
         IBLCommon _blCommon = null;
 
-        public DealerSaleController(IBLDealerSale blMonthPrice, IBLCommon blCommon)
+        public DealerSaleController(IBLDealerSale blDealerSale, IBLCommon blCommon)
         {
-            _blDealerSale = blMonthPrice;
+            _blDealerSale = blDealerSale;
             _blCommon = blCommon;
         }
         public IEnumerable<DealerSale> GetDealerSale()

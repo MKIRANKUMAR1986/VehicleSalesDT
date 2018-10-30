@@ -10,5 +10,7 @@ namespace VehicleSalesDT.BusinessLogic.Shared
     {
         IEnumerable<Sale> GetParsedSales(string filePath);
         string GetExcelFilePath();
+
+        bool CheckIfFileExists(string filePath);
     }
 }
