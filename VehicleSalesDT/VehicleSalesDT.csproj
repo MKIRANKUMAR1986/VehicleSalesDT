@@ -194,11 +194,13 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="BusinessLogic\BLDealerSale.cs" />
     <Compile Include="BusinessLogic\BLMonthPrice.cs" />
+    <Compile Include="BusinessLogic\BLMonthSale.cs" />
     <Compile Include="BusinessLogic\BLMonthVehicleSale.cs" />
     <Compile Include="BusinessLogic\BLSale.cs" />
     <Compile Include="BusinessLogic\BLVehicle.cs" />
     <Compile Include="BusinessLogic\Constants.cs" />
     <Compile Include="BusinessLogic\IBLDealerSale.cs" />
+    <Compile Include="BusinessLogic\IBLMonthSale.cs" />
     <Compile Include="BusinessLogic\IBLMonthVehicleSale.cs" />
     <Compile Include="BusinessLogic\IBLVehicle.cs" />
     <Compile Include="BusinessLogic\Shared\BLCommon.cs" />
@@ -207,6 +209,7 @@
     <Compile Include="BusinessLogic\Shared\IBLCommon.cs" />
     <Compile Include="Controllers\Api\DealerSaleController.cs" />
     <Compile Include="Controllers\Api\MonthPriceController.cs" />
+    <Compile Include="Controllers\Api\MonthSaleController.cs" />
     <Compile Include="Controllers\Api\MonthVehicleSaleController.cs" />
     <Compile Include="Controllers\Api\SaleController.cs" />
     <Compile Include="Controllers\Api\VehicleController.cs" />
@@ -219,6 +222,7 @@
     </Compile>
     <Compile Include="Models\DealerSale.cs" />
     <Compile Include="Models\MonthPrice.cs" />
+    <Compile Include="Models\MonthSale.cs" />
     <Compile Include="Models\MonthVehicleSale.cs" />
     <Compile Include="Models\Sale.cs" />
     <Compile Include="Models\Vehicle.cs" />

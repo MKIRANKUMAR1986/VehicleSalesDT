@@ -53,6 +53,7 @@ namespace VehicleSalesDT.Unity
             container.RegisterType<IBLMonthPrice, BLMonthPrice>();
             container.RegisterType<IBLDealerSale, BLDealerSale>();
             container.RegisterType<IBLMonthVehicleSale, BLMonthVehicleSale>();
+            container.RegisterType<IBLMonthSale, BLMonthSale>();
             container.RegisterType<IBLVehicle, BLVehicle>();
 
             return container;
