@@ -11,6 +11,13 @@ namespace VehicleSalesDT.BusinessLogic
         IEnumerable<Sale> GetSales(string filePath);
 
         IEnumerable<Sale> GetSales(HttpPostedFileBase postedFile, string filePath);
+
+        IEnumerable<MonthPrice> GetMonthPrices(IEnumerable<Sale> sales);
+
+        IEnumerable<MonthSale> GetMonthSales(IEnumerable<Sale> sales);
+
+        IEnumerable<DealerSale> GetDealerSales(IEnumerable<Sale> sales);
+
     }
     
 }

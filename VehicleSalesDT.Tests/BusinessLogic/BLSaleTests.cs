@@ -77,7 +77,7 @@ namespace VehicleSalesDT.Tests.BusinessLogic
         }
 
         [Test]
-        public void GetSales_InvalidRecordFile_ReturnNull()
+        public void GetSales_InvalidRecordFile_ReturnEmptyList()
         {
             //Arrange
             _filePath = ConfigurationManager.AppSettings["InvalidRecord"].ToString();
@@ -86,7 +86,7 @@ namespace VehicleSalesDT.Tests.BusinessLogic
             var result = _blSale.GetSales(_filePath);
 
             //Assert
-            Assert.That(result, Is.Null);
+            Assert.That(result, Is.Empty);
         }
     }
 }

@@ -11,6 +11,7 @@ using VehicleSalesDT.BusinessLogic;
 using VehicleSalesDT.Unity;
 using Unity.Attributes;
 using VehicleSalesDT.BusinessLogic.Shared;
+using System.Globalization;
 
 namespace VehicleSalesDT.Controllers
 {
@@ -42,6 +43,10 @@ namespace VehicleSalesDT.Controllers
                                 .Select(a => a.Vehicle)
                                 .ToList()
                                 .FirstOrDefault();
+                ViewData["Sales"] = _sales;
+                ViewData["MonthPrice"] = _blSale.GetMonthPrices(_sales);
+                ViewData["MonthSale"] = _blSale.GetMonthSales(_sales);
+                ViewData["DealerSale"] = _blSale.GetDealerSales(_sales);
             }
 
             return View(_sales);
@@ -66,6 +71,10 @@ namespace VehicleSalesDT.Controllers
                                     .Select(a => a.Vehicle)
                                     .ToList()
                                     .FirstOrDefault();
+                    ViewData["Sales"] = _sales;
+                    ViewData["MonthPrice"] = _blSale.GetMonthPrices(_sales);
+                    ViewData["MonthSale"] = _blSale.GetMonthSales(_sales);
+                    ViewData["DealerSale"] = _blSale.GetDealerSales(_sales);
                 }
                 else
                 {
@@ -78,7 +87,6 @@ namespace VehicleSalesDT.Controllers
             }
             return View(_sales);
         }
-
         //public List<Sale> GetSales1()
         //{
         //    String[] csv = System.IO.File.ReadAllLines(Path.Combine(Server.MapPath("~/App_Data"), "Dealertrack-CSV-Example.csv"));

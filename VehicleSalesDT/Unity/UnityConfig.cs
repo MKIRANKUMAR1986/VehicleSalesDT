@@ -46,15 +46,9 @@ namespace VehicleSalesDT.Unity
         {
             var container = new UnityContainer();
 
-            container.RegisterType<IBLSale, BLSale>();
-            container.RegisterType<IDALSale, DALSale>();
-
+            container.RegisterType<IBLSale, BLSale>();            
             container.RegisterType<IBLCommon, BLCommon>();
-            container.RegisterType<IBLMonthPrice, BLMonthPrice>();
-            container.RegisterType<IBLDealerSale, BLDealerSale>();
-            container.RegisterType<IBLMonthVehicleSale, BLMonthVehicleSale>();
-            container.RegisterType<IBLMonthSale, BLMonthSale>();
-            container.RegisterType<IBLVehicle, BLVehicle>();
+            container.RegisterType<IDALSale, DALSale>();
 
             return container;
         }

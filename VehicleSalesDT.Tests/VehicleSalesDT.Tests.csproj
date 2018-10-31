@@ -144,18 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessLogic\BLSaleTests.cs" />
-    <Compile Include="BusinessLogic\BLVehicleTests.cs" />
-    <Compile Include="BusinessLogic\BLDealerSaleTests.cs" />
-    <Compile Include="BusinessLogic\BLMonthPriceTests.cs" />
-    <Compile Include="BusinessLogic\BLMonthSaleTests.cs" />
-    <Compile Include="BusinessLogic\BLMonthVehicleSaleTests.cs" />
     <Compile Include="BusinessLogic\Shared\BLCommonTests.cs" />
-    <Compile Include="Controllers\Api\DealerSaleControllerTests.cs" />
-    <Compile Include="Controllers\Api\MonthPriceControllerTests.cs" />
-    <Compile Include="Controllers\Api\MonthSaleControllerTests.cs" />
-    <Compile Include="Controllers\Api\MonthVehicleSaleControllerTests.cs" />
-    <Compile Include="Controllers\Api\SaleControllerTests.cs" />
-    <Compile Include="Controllers\Api\VehicleControllerTests.cs" />
     <Compile Include="Controllers\SaleControllerTests.cs" />
     <Compile Include="DAL\DALSaleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

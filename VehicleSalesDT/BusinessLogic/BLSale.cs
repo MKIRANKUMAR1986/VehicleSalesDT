@@ -11,6 +11,7 @@ using VehicleSalesDT.BusinessLogic.Shared;
 using System.IO;
 using Unity;
 using VehicleSalesDT.Unity;
+using System.Globalization;
 
 namespace VehicleSalesDT.BusinessLogic
 {
@@ -55,6 +56,44 @@ namespace VehicleSalesDT.BusinessLogic
             {
                 return null;
             }
+        }
+
+        public IEnumerable<MonthPrice> GetMonthPrices(IEnumerable<Sale> sales)
+        {
+            try
+            {
+                return sales
+                    .GroupBy(x => Convert.ToDateTime(x.SaleDate).Month)
+                    .Select(a => new MonthPrice { MonthId = a.Key, Price = a.Sum(b => b.Price), Month = DateTimeFormatInfo.CurrentInfo.GetAbbreviatedMonthName(a.Key) })
+                    .OrderBy(c => c.MonthId).ToList();
+            }
+            catch (Exception ex)
+            { return null; }
+        }
+
+        public IEnumerable<MonthSale> GetMonthSales(IEnumerable<Sale> sales)
+        {
+            try
+            {
+                return sales
+                    .GroupBy(x => Convert.ToDateTime(x.SaleDate).Month)
+                    .Select(a => new MonthSale { MonthId = a.Key, NumOfSales = a.Count(), Month = DateTimeFormatInfo.CurrentInfo.GetAbbreviatedMonthName(a.Key) })
+                    .OrderBy(c => c.MonthId).ToList();
+            }
+            catch (Exception ex)
+            { return null; }
+        }
+        public IEnumerable<DealerSale> GetDealerSales(IEnumerable<Sale> sales)
+        {
+            try
+            {
+                return sales
+                        .GroupBy(x => x.DealershipName)
+                        .Select(a => new DealerSale { DealershipName = a.Key, NumofSales = a.Count() })
+                        .OrderBy(c => c.NumofSales).ToList();
+            }
+            catch (Exception ex)
+            { return null; }
         }
     }
 }

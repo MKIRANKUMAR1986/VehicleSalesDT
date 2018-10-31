@@ -8,6 +8,6 @@ namespace VehicleSalesDT.DAL
 {
     public interface IDALSale
     {
-        TextFieldParser GetParsedSalesFromCSV(string filePath);
+        List<string> GetParsedSalesFromCSV(string filePath);
     }
 }

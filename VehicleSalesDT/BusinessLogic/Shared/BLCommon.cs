@@ -7,6 +7,7 @@ using VehicleSalesDT.DAL;
 using Microsoft.VisualBasic.FileIO;
 using System.Web.Configuration;
 using System.IO;
+using System.Text;
 
 namespace VehicleSalesDT.BusinessLogic.Shared
 {
@@ -21,50 +22,53 @@ namespace VehicleSalesDT.BusinessLogic.Shared
 
         public IEnumerable<Sale> GetParsedSales(string filePath)
         {
+            List<Sale> _Sales = new List<Sale>();
             try
             {
-                using (TextFieldParser parser = _dalSale.GetParsedSalesFromCSV(filePath))
+                List<string> parsedSales = _dalSale.GetParsedSalesFromCSV(filePath);
+
+                var SaleId = 1;
+                string[] fields;
+
+                foreach (var parsedSale in parsedSales)
                 {
-                    parser.HasFieldsEnclosedInQuotes = true;
-                    parser.SetDelimiters(",");
-
-                    string[] fields;
-
-                    List<Sale> _Sales = new List<Sale>();
-                    var SaleId = 1;
-
-                    while (!parser.EndOfData)
+                    fields = parsedSale.Split(',');
+                    if (SaleId > 1)
                     {
-                        fields = parser.ReadFields();
-                        if (SaleId > 1)
+                        if (ValidateExcelFileFields(fields))
                         {
-                            if (ValidateExcelFileFields(fields))
+                            Sale sale = new Sale()
                             {
-                                Sale sale = new Sale()
-                                {
-                                    SaleId = SaleId,
-                                    DealerNumber = Convert.ToInt32(fields[0]),
-                                    CustomerName = fields[1],
-                                    DealershipName = fields[2],
-                                    Vehicle = fields[3],
-                                    Price = Convert.ToDecimal(fields[4]),
-                                    SaleDate = Convert.ToDateTime(fields[5])
-                                };
-                                _Sales.Add(sale);
-                                SaleId++;
-                            }
-                            else { return null; }
+                                SaleId = SaleId,
+                                DealerNumber = Convert.ToInt32(fields[0].Trim()),
+                                CustomerName = fields[1].Trim(),
+                                DealershipName = fields[2].Trim(),
+                                Vehicle = fields[3].Trim(),
+                                Price = Convert.ToDecimal(fields[4].Trim()),
+                                SaleDate = Convert.ToDateTime(fields[5].Trim())
+                            };
+                            _Sales.Add(sale);
+                            SaleId++;
                         }
                         else
                         {
-                            SaleId++;
+                            _Sales.Clear();
+                            return _Sales;
                         }
                     }
-                    return _Sales;
+                    else
+                    {
+                        SaleId++;
+                    }
                 }
+                return _Sales;
             }
             catch (Exception ex)
-            { return null; }
+            {
+                //log exception
+                _Sales.Clear();
+                return _Sales;
+            }
         }
 
         public string GetExcelFilePath()
@@ -81,24 +85,27 @@ namespace VehicleSalesDT.BusinessLogic.Shared
             decimal dec;
             DateTime temp;
 
-            foreach (var field in fields)
+            if(fields.Count() == 6)
             {
-                if (field == null)
-                    return false;
-            }
+                foreach (var field in fields)
+                {
+                    if (field == null)
+                        return false;
+                }
 
-            if (!int.TryParse(fields[0].ToString(), out num))
-            {
-                return false;
-            }
-            else if(!decimal.TryParse(fields[0].ToString(), out dec))
-            {
-                return false;
-            }
-            else if (!DateTime.TryParse(fields[5].ToString(), out temp))
-            {
-                return false;
-            }
+                if (!int.TryParse(fields[0].ToString(), out num))
+                {
+                    return false;
+                }
+                else if (!decimal.TryParse(fields[0].ToString(), out dec))
+                {
+                    return false;
+                }
+                else if (!DateTime.TryParse(fields[5].ToString(), out temp))
+                {
+                    return false;
+                }
+            }            
             return true;
         }
 

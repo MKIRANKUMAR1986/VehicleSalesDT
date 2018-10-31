@@ -32,7 +32,7 @@ namespace VehicleSalesDT.Tests.DAL
             var result = _dalSale.GetParsedSalesFromCSV("sdfhskfh");
 
             //Assert
-            Assert.That(result, Is.Null);
+            Assert.That(result, Is.InstanceOf<List<string>>());
         }
 
         [Test]
@@ -45,7 +45,7 @@ namespace VehicleSalesDT.Tests.DAL
             var result = _dalSale.GetParsedSalesFromCSV(_filePath);
 
             //Assert
-            Assert.That(result, Is.InstanceOf<TextFieldParser>());
+            Assert.That(result, Is.InstanceOf<List<string>>());
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace VehicleSalesDT.Tests.DAL
             var result = _dalSale.GetParsedSalesFromCSV(_filePath);
 
             //Assert
-            Assert.That(result, Is.Null);
+            Assert.That(result, Is.InstanceOf<List<string>>());
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace VehicleSalesDT.Tests.DAL
             var result = _dalSale.GetParsedSalesFromCSV(_filePath);
 
             //Assert
-            Assert.That(result, Is.InstanceOf<TextFieldParser>());
+            Assert.That(result, Is.InstanceOf<List<string>>());
         }
     }
 }
