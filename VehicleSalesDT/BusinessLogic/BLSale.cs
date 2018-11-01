@@ -75,5 +75,36 @@ namespace VehicleSalesDT.BusinessLogic
                 return null;
             }
         }
+
+        public IEnumerable<MonthVehicleSale> GetMonthVehicleSales(IEnumerable<Sale> sales)
+        {
+            if (sales != null)
+            {
+                return sales
+                        .GroupBy(x => new { x.Vehicle, Convert.ToDateTime(x.SaleDate).Month })
+                        .Select(a => new MonthVehicleSale { MonthId = a.Key.Month, VehicleName = a.Key.Vehicle, NumofSales = a.Count() })
+                        //.OrderBy(c => c.VehicleName).ThenBy(m => m.MonthId).ToList();
+                        .ToList();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public IEnumerable<Vehicle> GetVehicles(IEnumerable<Sale> sales)
+        {
+            if (sales != null)
+            {
+                return sales
+                        .GroupBy(x =>  x.Vehicle)
+                        .Select(a => new Vehicle { VehicleName = a.Key})
+                        .ToList();
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

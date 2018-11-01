@@ -19,8 +19,7 @@
                 <div class="card-body">
                     @using (@Html.BeginForm("Index", "Sale", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
-                        <div>
-                            
+                        <div>                            
                             <div>
                                 <label>Choose file (csv): </label>
                                 <input id="postedFile" name="postedFile" type="file" required onchange="return fileValidation()" />
@@ -66,10 +65,10 @@
         </div>
     </div>
 </div>
-   <div>
+<div class="container">
     <h4></h4>
 </div>
-    <div class="container">
+<div class="container">
         <table id="sales" class="table table-bordered table-hover">
             <thead>
                 <tr>
@@ -97,7 +96,7 @@
         </table>
     </div>
 
-    <div class="container">
+<div class="container">
         <div class="row my-3">
             <div class="col">
                 <h4>Charts</h4>
@@ -123,17 +122,17 @@
             <div class="col-md-6 py-1">
                 <div class="card">
                     <div class="card-body">
+                        <canvas id="chLine2"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 py-1">
+                <div class="card">
+                    <div class="card-body">
                         <canvas id="chLineBar1"></canvas>
                     </div>
                 </div>
             </div>
-            @*<div class="col-md-6 py-1" hidden="hidden">
-                <div class="card">
-                    <div class="card-body">
-                        <canvas id="chLine2"></canvas>
-                    </div>
-                </div>
-            </div>*@
         </div>
         @*<div class="row my-2">
                 <div class="col-md-6 py-1">
@@ -174,7 +173,7 @@
 
 
     @section scripts
-{
+    {
         <script>
             function fileValidation() {
                 var fileInput = document.getElementById('postedFile');
@@ -219,6 +218,7 @@
                 monthlyPricesChart();
                 monthlySalesChart();
                 dealerSalesChart();
+                MonthVehicleSales();
                 var table = $("#sales").DataTable({
                     //ajax: {
                     //    url: "/api/sale",
@@ -493,77 +493,114 @@
                 //$.ajax({
                 //    url: "/api/MonthVehicleSale",
                 //    method: "GET",
-                //    success: function (data) {
-
-                //        var datasetValue = [];
-                //        var k = 0;
-                //        var l = 0;
-                //        for (var j in vehicle) {
-                //            var monthName = [];
-                //            var numOfSales = [];
-                //            for (var i in data) {
-                //                if (data[i].VehicleName == vehicle[j].VehicleName) {
-                //                    monthName.push(data[i].Month);
-                //                    numOfSales.push(data[i].NumofSales);
-                //                }
-                //            }
-                //            if (l > 6) {
-                //                l = 0;
-                //            }
-
-                //            datasetValue[k] = {
-                //                backgroundColor: 'transparent',
-                //                borderColor: colors[l],
-                //                borderWidth: 4,
-                //                pointBackgroundColor: colors[l],
-                //                title: vehicle[j].VehicleName,
-                //                data: numOfSales
-                //            }
-
-                //            k = k + 1;
-                //            l = l + 1;
-
-                //        }
-
-                //        var chartdata = {
-                //            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                //            //labels: monthName,
-                //            datasets: [
-                //                {
-                //                    data: [10,5,7,9,2,3,6,7,7,9,10,12]
-                //                },
-                //                {
-                //                    data: [4,5,7,9,2,9,1,7,4,9,6,3]
-                //                }
-                //            ]
-                //        };
-
-                //        var chLine2 = $("#chLine2");
-
-                //        if (chLine2) {
-                //            new Chart(chLine2, {
-                //                type: 'line',
-                //                data: chartdata,
-                //                options: {
-                //                    scales: {
-                //                        xAxes: [{
-                //                            ticks: {
-                //                                beginAtZero: true
-                //                            }
-                //                        }]
-                //                    },
-                //                    legend: {
-                //                        display: true
-                //                    },
-                //                    responsive: true
-                //                }
-                //            });
-                //        }
+                //    success: function(data){
                 //    },
                 //    error: function (data) {
                 //        console.log(data);
                 //    }
                 //});
+
+                function MonthVehicleSales(data) {
+
+                    //var Label1 = ['Mar','Jun','Sep', 'Oct'];
+                    //var Data1 = [4,6,9,2];
+
+                    //var Label2 = ['Jan','Apr','Jul', 'Dec'];
+                    //var Data2 = [9,2,4,5];
+
+                    //var chartdata = {
+                    //    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov','Dec'],
+                    //    //labels: ['Mar','Jun','Sep', 'Oct'],
+                    //    //labels: monthName,
+                    //    //labels: Label1,
+                    //    datasets: [
+                    //        {
+                    //            //data: [10,5,7,9,2,3,6,7,7,9,10,12]
+                    //            //data: Data1
+                    //            backgroundColor: 'transparent',
+                    //            borderColor: colors[0],
+                    //            borderWidth: 4,
+                    //            pointBackgroundColor: colors[0],
+                    //            label: '2017 Ferrari 488 Spider',
+                    //            data: [0,0,0,0,0,1,1,0,0,0,0,0]
+                    //        },
+                    //        {
+                    //            //data: [4,5,7,9,2,9,1,7,4,9,6,3]
+                    //            //data: Data2
+                    //            backgroundColor: 'transparent',
+                    //            borderColor: colors[2],
+                    //            borderWidth: 4,
+                    //            pointBackgroundColor: colors[1],
+                    //            label: '2018 Jeep Grand Cherokee Trackhawk',
+                    //            data: [0,0,0,0,1,1,1,0,0,0,0,0]
+                    //        }
+                    //    ]
+                    //};
+
+                    var chLine2 = $("#chLine2");
+                    var chartdata = [];
+                    var chartdata = {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov','Dec']
+                    };
+
+                    if (chLine2) {
+                        var chLineChart = new Chart(chLine2, {
+                            type: 'line',
+                            data: chartdata,
+                            options: {
+                                scales: {
+                                    xAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                },
+                                legend: {
+                                    display: true
+                                },
+                                responsive: true
+                            }
+                        });
+
+                        //TO-DO: vehicles is vehicleModel --Write LINQ query and then pass it as ViewData
+                        var vehicles = @Html.Raw(Json.Encode(ViewData["Vehicles"]));
+                        //TO-DO: vehicleMonthlySales is the VehicleMonthlySales  --Write LINQ query and then pass it as ViewData
+                        var vehicleMonthlySales = @Html.Raw(Json.Encode(ViewData["MonthVehicleSale"]));
+
+                        var k = 0;
+                        var l = 0;
+                        //console.log(vehicles);
+                        //console.log(vehicleMonthlySales);
+                        for (var j in vehicles) {                            
+                            var monthId = [];
+                            var numOfSales = [];
+                            // The original array
+                            var numOfSalesInEachMonthPerVehicle = [0,0,0,0,0,0,0,0,0,0,0,0];
+                            for (var i in vehicleMonthlySales) {
+                                if (vehicleMonthlySales[i].VehicleName == vehicles[j].VehicleName) {
+                                    numOfSalesInEachMonthPerVehicle.splice(vehicleMonthlySales[i].MonthId, 1, vehicleMonthlySales[i].NumofSales);                                                                          
+                                }
+                            }
+
+                            if (l > 6) {
+                                l = 0;
+                            }
+                            //This is working worked commented code. Pleae use when looping is required.
+                            chLineChart.data.datasets.push({
+                                label: vehicles[j].VehicleName,
+                                backgroundColor: 'transparent',
+                                borderColor: colors[l],
+                                borderWidth: 4,
+                                pointBackgroundColor: colors[l],
+                                data: numOfSalesInEachMonthPerVehicle,
+                                title: vehicles[j].VehicleName,
+                            });                            
+                            k = k + 1;
+                            l = l + 1;
+                        }
+                        chLineChart.update();
+                    }
+                };
             });
         </script>
     }

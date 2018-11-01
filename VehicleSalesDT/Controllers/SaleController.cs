@@ -52,6 +52,8 @@ namespace VehicleSalesDT.Controllers
                     ViewData["MonthPrice"] = _blSale.GetMonthPrices(_sales);
                     ViewData["MonthSale"] = _blSale.GetMonthSales(_sales);
                     ViewData["DealerSale"] = _blSale.GetDealerSales(_sales);
+                    ViewData["MonthVehicleSale"] = _blSale.GetMonthVehicleSales(_sales);
+                    ViewData["Vehicles"] = _blSale.GetVehicles(_sales);
                 }
                 else
                 {
