@@ -204,6 +204,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Dealer.cs" />
+    <Compile Include="Models\DealerMonthSale.cs" />
     <Compile Include="Models\DealerSale.cs" />
     <Compile Include="Models\MonthPrice.cs" />
     <Compile Include="Models\MonthSale.cs" />

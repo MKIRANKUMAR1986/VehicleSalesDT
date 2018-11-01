@@ -310,5 +310,79 @@ namespace VehicleSalesDT.Tests.BusinessLogic
             //Assert
             Assert.That(result, Is.Null);
         }
+
+        [Test]
+        public void GetDealers_InputValidList_ReturnCount()
+        {
+            //Arrange
+
+            //Act
+            var result = _blSale.GetDealers(_dummySales);
+
+            //Assert
+            Assert.That(result.Count(), Is.EqualTo(6));
+        }
+
+        [Test]
+        public void GetDealers_InputEmptyList_ReturnZeroCount()
+        {
+            //Arrange
+            _dummySales.Clear();
+
+            //Act
+            var result = _blSale.GetDealers(_dummySales);
+
+            //Assert
+            Assert.That(result.Count(), Is.EqualTo(0));
+        }
+
+        [Test]
+        public void GetDealers_InputNull_ReturnNull()
+        {
+            //Arrange
+
+            //Act
+            var result = _blSale.GetDealers(null);
+
+            //Assert
+            Assert.That(result, Is.Null);
+        }
+
+        [Test]
+        public void GetMonthDealerSales_InputValidList_ReturnCount()
+        {
+            //Arrange
+
+            //Act
+            var result = _blSale.GetMonthDealerSales(_dummySales);
+
+            //Assert
+            Assert.That(result.Count(), Is.EqualTo(7));
+        }
+
+        [Test]
+        public void GetMonthDealerSales_InputEmptyList_ReturnZeroCount()
+        {
+            //Arrange
+            _dummySales.Clear();
+
+            //Act
+            var result = _blSale.GetMonthDealerSales(_dummySales);
+
+            //Assert
+            Assert.That(result.Count(), Is.EqualTo(0));
+        }
+
+        [Test]
+        public void GetMonthDealerSales_InputNull_ReturnNull()
+        {
+            //Arrange
+
+            //Act
+            var result = _blSale.GetMonthDealerSales(null);
+
+            //Assert
+            Assert.That(result, Is.Null);
+        }
     }
 }

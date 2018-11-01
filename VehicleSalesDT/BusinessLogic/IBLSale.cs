@@ -21,6 +21,9 @@ namespace VehicleSalesDT.BusinessLogic
 
         IEnumerable<Vehicle> GetVehicles(IEnumerable<Sale> sales);
 
+        IEnumerable<DealerMonthSale> GetMonthDealerSales(IEnumerable<Sale> sales);
+
+        IEnumerable<Dealer> GetDealers(IEnumerable<Sale> _sales);
     }
     
 }

@@ -83,7 +83,6 @@ namespace VehicleSalesDT.BusinessLogic
                 return sales
                         .GroupBy(x => new { x.Vehicle, Convert.ToDateTime(x.SaleDate).Month })
                         .Select(a => new MonthVehicleSale { MonthId = a.Key.Month, VehicleName = a.Key.Vehicle, NumofSales = a.Count() })
-                        //.OrderBy(c => c.VehicleName).ThenBy(m => m.MonthId).ToList();
                         .ToList();
             }
             else
@@ -99,6 +98,36 @@ namespace VehicleSalesDT.BusinessLogic
                 return sales
                         .GroupBy(x =>  x.Vehicle)
                         .Select(a => new Vehicle { VehicleName = a.Key})
+                        .ToList();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public IEnumerable<Dealer> GetDealers(IEnumerable<Sale> sales)
+        {
+            if (sales != null)
+            {
+                return sales
+                        .GroupBy(x => x.DealershipName)
+                        .Select(a => new Dealer { DealerName = a.Key })
+                        .ToList();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public IEnumerable<DealerMonthSale> GetMonthDealerSales(IEnumerable<Sale> sales)
+        {
+            if (sales != null)
+            {
+                return sales
+                        .GroupBy(x => new { x.DealershipName, Convert.ToDateTime(x.SaleDate).Month })
+                        .Select(a => new DealerMonthSale { MonthId = a.Key.Month, DealershipName = a.Key.DealershipName, NumofSales = a.Count() })
                         .ToList();
             }
             else

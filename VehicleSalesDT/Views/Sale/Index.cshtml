@@ -94,8 +94,7 @@
                     }*@
             </tbody>
         </table>
-    </div>
-
+</div>
 <div class="container">
         <div class="row my-3">
             <div class="col">
@@ -132,6 +131,15 @@
                 <div class="card">
                     <div class="card-body">
                         <canvas id="chLine"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col-md-12 py-1">
+                <div class="card">
+                    <div class="card-body">
+                        <canvas id="chLine3"></canvas>
                     </div>
                 </div>
             </div>
@@ -220,7 +228,8 @@
                 monthlyPricesChart();
                 monthlySalesChart();
                 dealerSalesChart();
-                MonthVehicleSales();
+                MonthVehicleSalesChart();
+                MonthDealerSalesChart();
                 var table = $("#sales").DataTable({
                     //ajax: {
                     //    url: "/api/sale",
@@ -502,42 +511,7 @@
                 //    }
                 //});
 
-                function MonthVehicleSales(data) {
-
-                    //var Label1 = ['Mar','Jun','Sep', 'Oct'];
-                    //var Data1 = [4,6,9,2];
-
-                    //var Label2 = ['Jan','Apr','Jul', 'Dec'];
-                    //var Data2 = [9,2,4,5];
-
-                    //var chartdata = {
-                    //    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov','Dec'],
-                    //    //labels: ['Mar','Jun','Sep', 'Oct'],
-                    //    //labels: monthName,
-                    //    //labels: Label1,
-                    //    datasets: [
-                    //        {
-                    //            //data: [10,5,7,9,2,3,6,7,7,9,10,12]
-                    //            //data: Data1
-                    //            backgroundColor: 'transparent',
-                    //            borderColor: colors[0],
-                    //            borderWidth: 4,
-                    //            pointBackgroundColor: colors[0],
-                    //            label: '2017 Ferrari 488 Spider',
-                    //            data: [0,0,0,0,0,1,1,0,0,0,0,0]
-                    //        },
-                    //        {
-                    //            //data: [4,5,7,9,2,9,1,7,4,9,6,3]
-                    //            //data: Data2
-                    //            backgroundColor: 'transparent',
-                    //            borderColor: colors[2],
-                    //            borderWidth: 4,
-                    //            pointBackgroundColor: colors[1],
-                    //            label: '2018 Jeep Grand Cherokee Trackhawk',
-                    //            data: [0,0,0,0,1,1,1,0,0,0,0,0]
-                    //        }
-                    //    ]
-                    //};
+                function MonthVehicleSalesChart() {
 
                     var chLine2 = $("#chLine2");
                     var chartdata = [];
@@ -577,16 +551,13 @@
                                 responsive: true
                             }
                         });
-
-                        //TO-DO: vehicles is vehicleModel --Write LINQ query and then pass it as ViewData
+                        
                         var vehicles = @Html.Raw(Json.Encode(ViewData["Vehicles"]));
-                        //TO-DO: vehicleMonthlySales is the VehicleMonthlySales  --Write LINQ query and then pass it as ViewData
                         var vehicleMonthlySales = @Html.Raw(Json.Encode(ViewData["MonthVehicleSale"]));
 
                         var k = 0;
                         var l = 0;
-                        //console.log(vehicles);
-                        //console.log(vehicleMonthlySales);
+
                         for (var j in vehicles) {
                             var monthId = [];
                             var numOfSales = [];
@@ -615,6 +586,84 @@
                             l = l + 1;
                         }
                         chLineChart.update();
+                    }
+                };
+
+                function MonthDealerSalesChart() {
+                    var chLine3 = $("#chLine3");
+                    var chartdata = [];
+                    var chartdata = {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov','Dec']
+                    };
+
+                    if (chLine3) {
+                        var chLineChart3 = new Chart(chLine3, {
+                            type: 'line',
+                            data: chartdata,
+                            options: {
+                                scales: {
+                                    xAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        },
+                                        scaleLabel: {
+                                            display: true,
+                                            labelString: 'Month'
+                                        }
+                                    }],
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            fixedStepSize: 1
+                                        },
+                                        scaleLabel: {
+                                            display: true,
+                                            labelString: 'Number of Sales'
+                                        }
+                                    }]
+                                },
+                                legend: {
+                                    display: true
+                                },
+                                responsive: true
+                            }
+                        });
+                        
+                        var dealers = @Html.Raw(Json.Encode(ViewData["Dealers"]));                        
+                        var dealerMonthlySales = @Html.Raw(Json.Encode(ViewData["DealerMonthSales"]));
+
+                        var k = 0;
+                        var l = 0;
+
+                        for (var j in dealers) {
+                            var monthId = [];
+                            var numOfSales = [];
+                            // The original array
+                            var numOfSalesInEachMonthPerDealer = [0,0,0,0,0,0,0,0,0,0,0,0];
+                            for (var i in dealerMonthlySales) {
+                                if (dealerMonthlySales[i].DealershipName == dealers[j].DealerName) {
+                                    numOfSalesInEachMonthPerDealer.splice(dealerMonthlySales[i].MonthId, 1, dealerMonthlySales[i].NumofSales);
+                                }
+                            }
+
+                            if (l > 6) {
+                                l = 0;
+                            }
+                            chLineChart3.data.datasets.push({
+                                label: dealers[j].DealerName,
+                                backgroundColor: 'transparent',
+                                borderColor: colors[l],
+                                borderWidth: 4,
+                                pointBackgroundColor: colors[l],
+                                data: numOfSalesInEachMonthPerDealer,
+                                title: dealers[j].DealerName,
+                            });
+                            k = k + 1;
+                            l = l + 1;
+                        }
+                        console.log(dealers);
+                        console.log(dealerMonthlySales);
+                        chLineChart3.update();
                     }
                 };
             });
