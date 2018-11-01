@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 
 namespace VehicleSalesDT.DAL
@@ -19,7 +20,7 @@ namespace VehicleSalesDT.DAL
             List<string> _Sales = new List<string>();
             try
             {
-                using (TextFieldParser parser = new TextFieldParser(postedFile))
+                using (TextFieldParser parser = new TextFieldParser(postedFile, Encoding.GetEncoding("iso-8859-1")))
                 {
                     string delimiter = ",";
                     parser.HasFieldsEnclosedInQuotes = true;
