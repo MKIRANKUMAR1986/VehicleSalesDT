@@ -47,9 +47,7 @@ namespace VehicleSalesDT.Controllers
                                     .GroupBy(x => x.Vehicle)
                                     .Select(a => new { Vehicle = a.Key, NumOfTimes = a.Count() })
                                     .OrderByDescending(d => d.NumOfTimes)
-                                    .Take(1)
                                     .Select(a => a.Vehicle)
-                                    .ToList()
                                     .FirstOrDefault();
                     ViewData["Sales"] = _sales;
                     ViewData["MonthPrice"] = _blSale.GetMonthPrices(_sales);
