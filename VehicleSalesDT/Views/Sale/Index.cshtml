@@ -113,23 +113,25 @@
             <div class="col-md-6 py-1">
                 <div class="card">
                     <div class="card-body">
-                        <canvas id="chLine"></canvas>
+                        <canvas id="chLineBar1"></canvas>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row my-2" >
-            <div class="col-md-6 py-1">
+            <div class="col-md-12 py-1">
                 <div class="card">
                     <div class="card-body">
                         <canvas id="chLine2"></canvas>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 py-1">
+        </div>
+        <div class="row my-2">
+            <div class="col-md-12 py-1">
                 <div class="card">
                     <div class="card-body">
-                        <canvas id="chLineBar1"></canvas>
+                        <canvas id="chLine"></canvas>
                     </div>
                 </div>
             </div>
@@ -585,14 +587,14 @@
                         var l = 0;
                         //console.log(vehicles);
                         //console.log(vehicleMonthlySales);
-                        for (var j in vehicles) {                            
+                        for (var j in vehicles) {
                             var monthId = [];
                             var numOfSales = [];
                             // The original array
                             var numOfSalesInEachMonthPerVehicle = [0,0,0,0,0,0,0,0,0,0,0,0];
                             for (var i in vehicleMonthlySales) {
                                 if (vehicleMonthlySales[i].VehicleName == vehicles[j].VehicleName) {
-                                    numOfSalesInEachMonthPerVehicle.splice(vehicleMonthlySales[i].MonthId, 1, vehicleMonthlySales[i].NumofSales);                                                                          
+                                    numOfSalesInEachMonthPerVehicle.splice(vehicleMonthlySales[i].MonthId, 1, vehicleMonthlySales[i].NumofSales);
                                 }
                             }
 
@@ -608,7 +610,7 @@
                                 pointBackgroundColor: colors[l],
                                 data: numOfSalesInEachMonthPerVehicle,
                                 title: vehicles[j].VehicleName,
-                            });                            
+                            });
                             k = k + 1;
                             l = l + 1;
                         }
