@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using VehicleSalesDT.Models;
@@ -8,9 +9,7 @@ namespace VehicleSalesDT.BusinessLogic
 {
     public interface IBLSale
     {
-        IEnumerable<Sale> GetSales(string filePath);
-
-        IEnumerable<Sale> GetSales(HttpPostedFileBase postedFile, string filePath);
+        IEnumerable<Sale> GetSales(Stream postedFile);
 
         IEnumerable<MonthPrice> GetMonthPrices(IEnumerable<Sale> sales);
 

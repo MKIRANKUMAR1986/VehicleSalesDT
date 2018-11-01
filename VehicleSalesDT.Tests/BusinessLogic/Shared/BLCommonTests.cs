@@ -9,6 +9,7 @@ using VehicleSalesDT.DAL;
 using System.Configuration;
 using NUnit.Framework;
 using Moq;
+using System.IO;
 
 namespace VehicleSalesDT.Tests.BusinessLogic.Shared
 {
@@ -16,93 +17,28 @@ namespace VehicleSalesDT.Tests.BusinessLogic.Shared
     public class BLCommonTests
     {
         private IBLCommon _blCommon;
-        private string _filePath;
         private Mock<IDALSale> _dalSale;
 
         [SetUp]
         public void SetUp()
         {
-            //Arrange            
             _dalSale = new Mock<IDALSale>();
             _blCommon = new BLCommon(_dalSale.Object);
         }
 
         [Test]
-        public void CheckIfFileExists_InputFileNotValid_ReturnNull()
-        {
-            //Arrange
-            _filePath = "sdfhskfh";
-
-            //Act
-            var result = _blCommon.CheckIfFileExists(_filePath);
-
-            //Assert
-            Assert.That(result, Is.False);
-        }
-        [Test]
-        public void CheckIfFileExists_InvalidPath_ReturnNull()
-        {
-            //Arrange
-            _filePath = ConfigurationManager.AppSettings["InvalidValidFilePath"].ToString();
-
-            //Act
-            var result = _blCommon.CheckIfFileExists(_filePath);
-
-            //Assert
-            Assert.That(result, Is.False);
-        }
-
-        [Test]
-        public void CheckIfFileExists_Emptyfile_ReturnNull()
-        {
-            //Arrange
-            _filePath = ConfigurationManager.AppSettings["Emptyfile"].ToString();
-
-            //Act
-            var result = _blCommon.CheckIfFileExists(_filePath);
-
-            //Assert
-            Assert.That(result, Is.True);
-        }
-
-        [Test]
-        public void CheckIfFileExists_ValidFile_ReturnNonEmpty()
-        {
-            //Arrange
-            _filePath = ConfigurationManager.AppSettings["ValidFile"].ToString();
-
-            //Act
-            var result = _blCommon.CheckIfFileExists(_filePath);
-
-            //Assert
-            Assert.That(result, Is.True);
-        }
-
-        [Test]
-        public void CheckIfFileExists_InvalidRecordFile_ReturnNull()
-        {
-            //Arrange
-            _filePath = ConfigurationManager.AppSettings["InvalidRecord"].ToString();
-
-            //Act
-            var result = _blCommon.CheckIfFileExists(_filePath);
-
-            //Assert
-            Assert.That(result, Is.True);
-        }
-
-        [Test]
-        public void GetParsedSales_Empty_ReturnZeroCount()
+        public void GetParsedSales_Empty_ReturnEmptyList()
         {
             //Arrange
             List<string> emptyList = new List<string> { };
-            _dalSale.Setup(fr => fr.GetParsedSalesFromCSV("")).Returns(emptyList);
+            _dalSale.Setup(fr => fr.GetParsedSalesFromCSV(It.IsAny<Stream>())).Returns(emptyList);
 
             //Act
-            var result = _blCommon.GetParsedSales("");
+            var result = _blCommon.GetParsedSales(It.IsAny<Stream>());
 
             //Assert
-            Assert.That(result.Count(), Is.EqualTo(0));
+            Assert.That(result, Is.Empty);
+
         }
 
         [Test]
@@ -114,11 +50,11 @@ namespace VehicleSalesDT.Tests.BusinessLogic.Shared
                 "5469,Milli Fulton,Sun of Saskatoon,2017 Ferrari 488 Spider,429987,6/19/2018",
                 "5324,Richard Spencer,Maxwell & Junior,2016 Porsche 911 2dr Cpe GT3 RS,395774,8/26/2018",
                 "5634,Storm William,Scott Toronto Dealership Inc,2018 BMW M760Li Xdrive Sedan,305435,3/12/2018"
-            };
-            _dalSale.Setup(fr => fr.GetParsedSalesFromCSV("")).Returns(validList);
+                };
+            _dalSale.Setup(fr => fr.GetParsedSalesFromCSV(It.IsAny<Stream>())).Returns(validList);
 
             //Act
-            var result = _blCommon.GetParsedSales("");
+            var result = _blCommon.GetParsedSales(It.IsAny<Stream>());
 
             //Assert
             Assert.That(result.Count(), Is.EqualTo(3));
@@ -133,11 +69,11 @@ namespace VehicleSalesDT.Tests.BusinessLogic.Shared
                 "5469,Milli Fulton,Sun of Saskatoon,2017 Ferrari 488 Spider,429987,6/19/2018",
                 "5324,Richard Spencer,Maxwell & Junior,2016 Porsche 911 2dr Cpe GT3 RS,395774,8/26/2018",
                 "5634,Storm William,Scott Toronto Dealership Inc,2018 BMW M760Li Xdrive Sedan,fdg,3/12/2018"
-            };
-            _dalSale.Setup(fr => fr.GetParsedSalesFromCSV("")).Returns(priceNotDecimalList);
+                };
+            _dalSale.Setup(fr => fr.GetParsedSalesFromCSV(It.IsAny<Stream>())).Returns(priceNotDecimalList);
 
             //Act
-            var result = _blCommon.GetParsedSales("");
+            var result = _blCommon.GetParsedSales(It.IsAny<Stream>());
 
             //Assert
             Assert.That(result, Is.Empty);
@@ -151,11 +87,11 @@ namespace VehicleSalesDT.Tests.BusinessLogic.Shared
                 "DealNumber,CustomerName,DealershipName,Vehicle,Price,Date",
                 "5469,Milli Fulton,Sun of Saskatoon,2017 Ferrari 488 Spider,429987",
                 "5324,Richard Spencer,Maxwell & Junior,2016 Porsche 911 2dr Cpe GT3 RS,395774,8/26/2018",
-            };
-            _dalSale.Setup(fr => fr.GetParsedSalesFromCSV("")).Returns(oneColumnDataMissingList);
+                };
+            _dalSale.Setup(fr => fr.GetParsedSalesFromCSV(It.IsAny<Stream>())).Returns(oneColumnDataMissingList);
 
             //Act
-            var result = _blCommon.GetParsedSales("");
+            var result = _blCommon.GetParsedSales(It.IsAny<Stream>());
 
             //Assert
             Assert.That(result, Is.Empty);
@@ -167,11 +103,11 @@ namespace VehicleSalesDT.Tests.BusinessLogic.Shared
             //Arrange
             List<string> onlyHeadersList = new List<string> {
                 "DealNumber,CustomerName,DealershipName,Vehicle,Price,Date"
-            };
-            _dalSale.Setup(fr => fr.GetParsedSalesFromCSV("")).Returns(onlyHeadersList);
+                };
+            _dalSale.Setup(fr => fr.GetParsedSalesFromCSV(It.IsAny<Stream>())).Returns(onlyHeadersList);
 
             //Act
-            var result = _blCommon.GetParsedSales("");
+            var result = _blCommon.GetParsedSales(It.IsAny<Stream>());
 
             //Assert
             Assert.That(result.Count(), Is.EqualTo(0));
@@ -185,11 +121,11 @@ namespace VehicleSalesDT.Tests.BusinessLogic.Shared
                 "DealNumber,CustomerName,DealershipName,Vehicle,Price,Date,SalePerson",
                 "5469,Milli Fulton,Sun of Saskatoon,2017 Ferrari 488 Spider,429987,8/26/2018,Mark",
                 "5324,Richard Spencer,Maxwell & Junior,2016 Porsche 911 2dr Cpe GT3 RS,395774,8/26/2018,Will",
-            };
-            _dalSale.Setup(fr => fr.GetParsedSalesFromCSV("")).Returns(additionalListColumnAtEnd);
+                };
+            _dalSale.Setup(fr => fr.GetParsedSalesFromCSV(It.IsAny<Stream>())).Returns(additionalListColumnAtEnd);
 
             //Act
-            var result = _blCommon.GetParsedSales("");
+            var result = _blCommon.GetParsedSales(It.IsAny<Stream>());
 
             //Assert
             Assert.That(result.Count(), Is.EqualTo(2));
@@ -204,10 +140,10 @@ namespace VehicleSalesDT.Tests.BusinessLogic.Shared
                 "1,5469,Milli Fulton,Sun of Saskatoon,2017 Ferrari 488 Spider,429987,8/26/2018",
                 "2,5324,Richard Spencer,Maxwell & Junior,2016 Porsche 911 2dr Cpe GT3 RS,395774,8/26/2018",
             };
-            _dalSale.Setup(fr => fr.GetParsedSalesFromCSV("")).Returns(additionalListColumnAtBeginning);
+            _dalSale.Setup(fr => fr.GetParsedSalesFromCSV(It.IsAny<Stream>())).Returns(additionalListColumnAtBeginning);
 
             //Act
-            var result = _blCommon.GetParsedSales("");
+            var result = _blCommon.GetParsedSales(It.IsAny<Stream>());
 
             //Assert
             Assert.That(result.Count(), Is.EqualTo(0));
@@ -222,10 +158,10 @@ namespace VehicleSalesDT.Tests.BusinessLogic.Shared
                 "5469,Milli Fulton,Sun of Saskatoon,2017 Ferrari 488 Spider,429987,8/26/2018",
                 "5324,Richard Spencer,Maxwell & Junior,2016 Porsche 911 2dr Cpe GT3 RS,395774,8/26/2018",
             };
-            _dalSale.Setup(fr => fr.GetParsedSalesFromCSV("")).Returns(additionalListColumnAtEnd);
+            _dalSale.Setup(fr => fr.GetParsedSalesFromCSV(It.IsAny<Stream>())).Returns(additionalListColumnAtEnd);
 
             //Act
-            var result = _blCommon.GetParsedSales("").Sum(t => t.Price).ToString();
+            var result = _blCommon.GetParsedSales(It.IsAny<Stream>()).Sum(t => t.Price).ToString();
 
             //Assert
             Assert.That(result, Is.EqualTo("825761"));

@@ -20,12 +20,12 @@ namespace VehicleSalesDT.BusinessLogic.Shared
             _dalSale = dalSale;
         }
 
-        public IEnumerable<Sale> GetParsedSales(string filePath)
+        public IEnumerable<Sale> GetParsedSales(Stream postedFile)
         {
             List<Sale> _Sales = new List<Sale>();
             try
             {
-                List<string> parsedSales = _dalSale.GetParsedSalesFromCSV(filePath);
+                List<string> parsedSales = _dalSale.GetParsedSalesFromCSV(postedFile);
 
                 var SaleId = 1;
                 string[] fields;
@@ -71,14 +71,6 @@ namespace VehicleSalesDT.BusinessLogic.Shared
             }
         }
 
-        public string GetExcelFilePath()
-        {
-            if (WebConfigurationManager.AppSettings[Constants.EXCEL_FILE_FOLDER_NAME] != null && WebConfigurationManager.AppSettings[Constants.EXCEL_FILE_NAME] != null)
-                return Path.Combine(HttpContext.Current.Server.MapPath(WebConfigurationManager.AppSettings[Constants.EXCEL_FILE_FOLDER_NAME].Trim().ToString()), WebConfigurationManager.AppSettings[Constants.EXCEL_FILE_NAME].Trim().ToString());
-            else
-                return Path.Combine(HttpContext.Current.Server.MapPath(Constants.EXCEL_FILE_FOLDER_NAME), Constants.EXCEL_FILE_NAME); 
-        }
-
         private bool ValidateExcelFileFields(string[] fields)
         {
             int num;
@@ -107,11 +99,6 @@ namespace VehicleSalesDT.BusinessLogic.Shared
                 }
             }            
             return true;
-        }
-
-        public bool CheckIfFileExists(string filePath)
-        {
-            return File.Exists(filePath);
         }
     }
 }

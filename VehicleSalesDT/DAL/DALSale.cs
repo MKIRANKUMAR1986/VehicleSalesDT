@@ -14,12 +14,12 @@ namespace VehicleSalesDT.DAL
 
         }
 
-        public List<string> GetParsedSalesFromCSV(string filePath)
+        public List<string> GetParsedSalesFromCSV(Stream postedFile)
         {
             List<string> _Sales = new List<string>();
             try
-            {                
-                using (TextFieldParser parser = new TextFieldParser(filePath))
+            {
+                using (TextFieldParser parser = new TextFieldParser(postedFile))
                 {
                     string delimiter = ",";
                     parser.HasFieldsEnclosedInQuotes = true;
@@ -38,7 +38,7 @@ namespace VehicleSalesDT.DAL
                     }
                     return _Sales;
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -46,6 +46,6 @@ namespace VehicleSalesDT.DAL
                 _Sales.Clear();
                 return _Sales;
             }
-        }        
+        }
     }
 }
